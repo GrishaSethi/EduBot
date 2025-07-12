@@ -1,291 +1,55 @@
-# 🎓 EduBot - AI-Powered Educational Assistant
+# OpenVINO Chatbot using RAG (PDF)
 
-> **Intel Unnati Project** - Revolutionizing Learning Through Interactive AI
+## Description
 
-[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
-[![React](https://img.shields.io/badge/React-18+-blue.svg)](https://reactjs.org/)
-[![Express](https://img.shields.io/badge/Express-4.18+-black.svg)](https://expressjs.com/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.0+-38B2AC.svg)](https://tailwindcss.com/)
-[![Gemini AI](https://img.shields.io/badge/Gemini-AI-orange.svg)](https://ai.google.dev/)
+This project demonstrates how to extend the LLM models' capability to answer a question related to a given document.
+The project consists of two programs. One is for preparation, and the other is for question and answering using LLM.
+The preparation program will read a PDF file and generate a database (vector store).
+The LLM model will pick up a collection of a fraction of the input document that is related to the given query from the user and then answer the query by referring to the picked-up documents. This technique is so called RAG (Retrieval Augmented Generation).
 
----
+## How to run
+0. Install prerequisites
 
-## 🌟 **About Intel Unnati**
-
-**Intel Unnati** is a transformative initiative aimed at democratizing education through cutting-edge AI technology. This project represents our commitment to making learning accessible, engaging, and personalized for students worldwide.
-
-### 🎯 **Project Vision**
-- **Democratizing Education**: Making quality education accessible to all
-- **AI-Powered Learning**: Leveraging artificial intelligence for personalized learning experiences
-- **Interactive Engagement**: Creating immersive and fun learning environments
-- **Skill Development**: Fostering critical thinking and problem-solving skills
-
----
-
-## 🚀 **Features**
-
-### 📚 **Smart Quiz Generation**
-- **AI-Powered Questions**: Generate quizzes on any topic using Gemini AI
-- **Difficulty Levels**: Choose from Easy 😊, Medium 🤔, or Hard 🧠
-- **Customizable**: Set number of questions (1-20)
-- **Real-time Generation**: Instant quiz creation with detailed explanations
-
-### 🎮 **Interactive Learning Experience**
-- **Power-ups System**: 
-  - 💡 **Hints**: Get helpful clues (3 per quiz)
-  - 🎯 **50/50**: Eliminate two wrong answers
-  - ⏭️ **Skip**: Skip difficult questions
-- **Visual Feedback**: Beautiful animations and progress indicators
-- **Achievement System**: Unlock badges and track progress
-
-### 🤖 **AI Learning Assistant**
-- **24/7 Support**: Get help anytime with the integrated chatbot
-- **Voice Interaction**: Speak to the AI assistant
-- **Text-to-Speech**: Listen to AI responses
-- **Smart Suggestions**: Get related topics and examples
-- **Markdown Support**: Rich formatting for better understanding
-
-### 🏆 **Gamification Elements**
-- **Achievement Badges**: 
-  - 🥇 First Quiz Completion
-  - 🧠 Perfect Score
-  - 💡 No Hints Used
-- **Performance Tracking**: Monitor learning progress
-- **Progress Visualization**: Beautiful charts and statistics
-
-### 🎨 **Modern UI/UX**
-- **Glassmorphism Design**: Modern glass-like interface
-- **Animated Elements**: Smooth transitions and micro-interactions
-- **Responsive Design**: Works on all devices
-- **Dark/Light Theme**: Comfortable viewing experience
-- **Accessibility**: Inclusive design for all users
-
----
-
-## 🛠️ **Technology Stack**
-
-### **Frontend**
-- ⚛️ **React 18** - Modern UI framework
-- 🎨 **Tailwind CSS** - Utility-first CSS framework
-- 🚀 **Vite** - Fast build tool
-- 📱 **Responsive Design** - Mobile-first approach
-
-### **Backend**
-- 🟢 **Node.js** - JavaScript runtime
-- 🚂 **Express.js** - Web application framework
-- 🔄 **Nodemon** - Development server
-- 🔒 **CORS** - Cross-origin resource sharing
-
-### **AI Integration**
-- 🤖 **Google Gemini AI** - Advanced language model
-- 🔑 **API Integration** - RESTful API endpoints
-- 📝 **Prompt Engineering** - Optimized AI prompts
-
-### **Development Tools**
-- 📦 **npm** - Package manager
-- 🔍 **ESLint** - Code quality
-- 🎯 **TypeScript** - Type safety (optional)
-
----
-
-## 📦 **Installation & Setup**
-
-### **Prerequisites**
-- Node.js (v18 or higher)
-- npm (v8 or higher)
-- Google Gemini API key
-
-### **1. Clone the Repository**
-```bash
-git clone https://github.com/GrishaSethi/EduBot.git
-cd edubot-intel-unnati
+```sh
+python -m venv venv
+venv\Scripts\activate
+python -m pip install -U pip
+pip install -U setuptools wheel
+pip install -r requirements.txt
 ```
 
-### **2. Install Dependencies**
+1. Download LLM models
 
-#### **Backend Setup**
-```bash
-npm install
+This program downloads the LLM models and converts them into OpenVINO IR models.
+If you don't want to download many LLM models, you can comment out the models in the code to save time.
+```sh
+phthon llm-model-downloader.py
 ```
 
-#### **Frontend Setup**
-```bash
-cd frontend
-npm install
-cd ..
+2. Preparation - Read a PDF file and generate a vectorstore
+
+```sh
+python vectorstore_generator.py -i input.pdf
+```
+`./vectorstore_{pdf_basename}` directory will be created. The data of the vectorstore will be stored in the directory. E.g. `./vectorstore_input`.
+![generation](./resources/generation.png)
+
+3. Run LLM Chatbot
+
+```sh
+python openvino-chatbot-rag-pdf.py -v vectorstore_input
+```
+![chatbot](./resources/chatbot.png)
+
+## Appendix - vectorstore (retriever) test tool
+
+You can check which fraction of the input documents are picked up from the vectorstore based on the input query.
+```sh
+python test_vectorstore.py -v vectorstore_hoge
 ```
 
-### **3. Environment Configuration**
+![test_vectorstore](./resources/test_vectorstore.png)
+## Test environment
 
-Create a `.env` file in the root directory:
-```env
-GEMINI_API_KEY=your_gemini_api_key_here
-```
-
-**Get your Gemini API key:**
-1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Create a new API key
-3. Copy and paste it in the `.env` file
-
-### **4. Start the Application**
-
-#### **Start Backend Server**
-```bash
-npm run dev
-```
-Backend will run on: `http://localhost:5001`
-
-#### **Start Frontend Server** (in a new terminal)
-```bash
-cd frontend
-npm run dev
-```
-Frontend will run on: `http://localhost:5173`
-
-### **5. Access the Application**
-Open your browser and navigate to: `http://localhost:5173`
-
----
-
-## 🎯 **How to Use**
-
-### **Creating a Quiz**
-1. **Enter Topic**: Type any subject you want to learn about
-2. **Select Difficulty**: Choose Easy, Medium, or Hard
-3. **Set Questions**: Use the slider to select 1-20 questions
-4. **Generate**: Click "🚀 Generate Quiz" and watch the magic happen!
-
-### **Taking the Quiz**
-1. **Read Questions**: Each question is clearly presented
-2. **Use Power-ups**: 
-   - Click "💡 Show Hint" for help
-   - Use "🎯 50/50" to eliminate wrong answers
-   - "⏭️ Skip" difficult questions
-3. **Submit**: Review your answers and submit
-4. **Review**: See explanations and your score
-
-### **Using the AI Assistant**
-1. **Open Chat**: Click the chat icon in the bottom-right
-2. **Ask Questions**: Type or speak your questions
-3. **Get Help**: Receive detailed explanations and examples
-4. **Explore**: Use suggestion buttons for more learning
-
----
-
-## 🏗️ **Project Structure**
-
-```
-quiz+chatbot/
-├── 📁 frontend/                 # React frontend application
-│   ├── 📁 src/
-│   │   ├── 📁 components/       # React components
-│   │   │   ├── 🎯 QuizForm.jsx
-│   │   │   ├── 📝 QuizDisplay.jsx
-│   │   │   ├── 🤖 Chatbot.jsx
-│   │   │   └── 🏆 Achievements.jsx
-│   │   ├── 📁 utils/           # Utility functions
-│   │   ├── 📁 contexts/        # React contexts
-│   │   └── 📁 styles/          # CSS styles
-│   └── 📁 public/              # Static assets
-├── 📁 routes/                  # Express.js routes
-│   ├── 🎯 quiz.js             # Quiz generation endpoints
-│   └── 🤖 chatbot.js          # Chatbot endpoints
-├── 📁 utils/                   # Backend utilities
-│   └── 📝 generatePrompt.js   # AI prompt generation
-├── 🚀 index.js                # Main server file
-└── 📋 package.json            # Project dependencies
-```
-
----
-
-## 🔧 **API Endpoints**
-
-### **Quiz Generation**
-```http
-POST /api/generate-quiz
-Content-Type: application/json
-
-{
-  "topic": "Quantum Physics",
-  "numQuestions": 5,
-  "difficulty": "medium"
-}
-```
-
-### **Chatbot**
-```http
-POST /api/chatbot
-Content-Type: application/json
-
-{
-  "message": "Explain photosynthesis"
-}
-```
-
----
-
-## 🎨 **Customization**
-
-### **Styling**
-- Modify `frontend/src/index.css` for global styles
-- Update `frontend/tailwind.config.js` for theme customization
-- Edit component files for specific styling
-
-### **AI Prompts**
-- Customize prompts in `utils/generatePrompt.js`
-- Adjust chatbot behavior in `routes/chatbot.js`
-
-### **Features**
-- Add new power-ups in `QuizDisplay.jsx`
-- Create new achievements in `utils/achievements.js`
-- Extend API endpoints in route files
-
----
-
-## 🧪 **Testing**
-
-### **Backend Testing**
-```bash
-# Test API endpoints
-curl http://localhost:5001
-curl -X POST http://localhost:5001/api/generate-quiz \
-  -H "Content-Type: application/json" \
-  -d '{"topic":"Math","numQuestions":3,"difficulty":"easy"}'
-```
-
-### **Frontend Testing**
-- Open browser developer tools
-- Check console for errors
-- Test responsive design on different screen sizes
-
----
-
-## 🚀 **Deployment**
-
-### **Backend Deployment**
-1. Set up environment variables on your hosting platform
-2. Deploy to platforms like:
-   - **Heroku**
-   - **Vercel**
-   - **Railway**
-   - **DigitalOcean**
-
-### **Frontend Deployment**
-1. Build the project: `npm run build`
-2. Deploy to platforms like:
-   - **Vercel**
-   - **Netlify**
-   - **GitHub Pages**
-
----
-
-## 🙏 **Acknowledgments**
-
-- **Intel Unnati** for the vision and support
-- **Google Gemini AI** for powerful AI capabilities
-- **React & Express** communities for amazing frameworks
-- **Open Source Contributors** for inspiration and tools
-
----
-
-Happy Quizzing! 🚀
+- Windows 11
+- OpenVINO 2023.2.0
