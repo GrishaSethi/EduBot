@@ -147,30 +147,10 @@ Open your browser and navigate to: `http://localhost:5173`
 
 ---
 
-## 🎯 **How to Use**
+## Project Assets
 
-### **Creating a Quiz**
-1. **Enter Topic**: Type any subject you want to learn about
-2. **Select Difficulty**: Choose Easy, Medium, or Hard
-3. **Set Questions**: Use the slider to select 1-20 questions
-4. **Generate**: Click "🚀 Generate Quiz" and watch the magic happen!
-
-### **Taking the Quiz**
-1. **Read Questions**: Each question is clearly presented
-2. **Use Power-ups**: 
-   - Click "💡 Show Hint" for help
-   - Use "🎯 50/50" to eliminate wrong answers
-   - "⏭️ Skip" difficult questions
-3. **Submit**: Review your answers and submit
-4. **Review**: See explanations and your score
-
-### **Using the AI Assistant**
-1. **Open Chat**: Click the chat icon in the bottom-right
-2. **Ask Questions**: Type or speak your questions
-3. **Get Help**: Receive detailed explanations and examples
-4. **Explore**: Use suggestion buttons for more learning
-
----
+- 📄 [Project Report](assets/report.pdf)
+- 🎬 [Demo Video](assets/demo.mp4)
 
 ## 🏗️ **Project Structure**
 
