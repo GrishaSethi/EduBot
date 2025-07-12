@@ -149,8 +149,8 @@ Open your browser and navigate to: `http://localhost:5173`
 
 ## Project Assets
 
-- 📄 [Project Report](assets/report.pdf)
-- 🎬 [Demo Video](assets/demo.mp4)
+- 📄 [Project Report](assets/report.docx)
+- 🎬 [Demo Video](assets/demo_video.mp4)
 
 ## 🏗️ **Project Structure**
 
